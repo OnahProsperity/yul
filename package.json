@@ -1,0 +1,27 @@
+{
+  "name": "all-about-yul",
+  "version": "1.0.0",
+  "description": "This repo focuses on detail step by step on mastering EVM assembly language",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OnahProsperity/yul.git"
+  },
+  "keywords": [
+    "yul",
+    "(Assembly)"
+  ],
+  "author": "https://onahprosperity.github.io",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OnahProsperity/yul/issues"
+  },
+  "homepage": "https://github.com/OnahProsperity/yul#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "hardhat": "^2.12.1"
+  }
+}
