@@ -1,56 +1,54 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.9
+pragma solidity 0.8.9;
 
-;
-contract yul_types {
-    
-    function Uint256() external pure returns (uint256 x) {
-        x = 100;
-    }
+contract YulTypes {
 
-    function getUint256Yul() external pure returns (uint256 x) {
+    function getNumber() external pure returns(uint256) {
+
+        uint256 value;
+
         assembly {
-            x := 100
+            value := 100
         }
+
+        return value;
     }
 
-    function getHexInNumber() external pure returns (uint256 x) {
+    function getHex() external pure returns(uint256) {
+
+        uint256 value;
+
         assembly {
-            x := 0x64
+            value := 0x64
         }
+
+        return value;
     }
 
-    function Bytes32() external pure returns (bytes32 x) {
-        return x;
-    }
 
-    function Bool() external pure returns (bool x) {
-        x = true;
-    }
+    function getAssignments() external pure returns(bool) {
+        bool _rep;
 
-    function Address() external pure returns (address x) {
-        x = address(1);
-    }
+        bytes32 zero = bytes32("2");
 
-    function AddressInYul() external pure returns (address x) {
         assembly {
-            x := 1
+            _rep := zero
         }
+
+        return _rep;
     }
 
-    function Strings() external pure returns (string memory x) {
-        x = "function string";
-    }
+    function getString() external pure returns( string memory) {
+        bytes32  rep;
 
-
-    function StringInYul() external pure returns (string memory) {
-        bytes32 myString = "";
         assembly {
-            myString := "output string"
+            rep := "Hello World"
         }
-        return string(abi.encode(myString));
+
+        return string(abi.encode(rep));
     }
 
-    
 }
+
+
 
