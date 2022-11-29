@@ -23,5 +23,8 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "hardhat": "^2.12.1"
+  },
+  "dependencies": {
+    "@uniswap/v3-periphery": "^1.4.3"
   }
 }
