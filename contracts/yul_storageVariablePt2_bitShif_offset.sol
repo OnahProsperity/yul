@@ -7,7 +7,7 @@ contract StoragePart1 {
     uint16  public C = 4;     // 2 bytes
     uint8   public D = 5;     // 1 bytes
     
-    // sum in a slot 0 =      31 bytes
+    // sum in a slot 0 =      32 bytes
 
     function loadYulSlotInBytes(uint256 slot) external view returns(bytes32 ret) {
         assembly {
