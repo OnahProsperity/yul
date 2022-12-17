@@ -12,12 +12,13 @@ contract StoragePart3 {
 
     uint256[3] fixedArray;
     uint256[] unfixedArray;
+    uint8[] typeUint8Array;
 
 
     constructor() {
         fixedArray = [10,80,90];
         unfixedArray = [11,222,333,444,555];
-
+        typeUint8Array = [5,7,8,9];
     }
 
     function readFixedArray(uint256 index) external view returns(uint256 ret) {
@@ -52,5 +53,18 @@ contract StoragePart3 {
         }
     }
 
-    
+    function readTypeUint8Array(uint256 index) external view returns(bytes32 ret) {
+        bytes32 slot;
+
+        assembly {
+            slot := typeUint8Array.slot
+        }
+
+        bytes32 location = keccak256(abi.encode(slot));
+
+        assembly {
+            ret := sload(add(location, index))
+        }
+    }
+
 }
