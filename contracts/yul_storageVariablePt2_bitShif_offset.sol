@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.8.17;
 
-contract StoragePart1 {
+contract StoragePart2 {
     uint128 public A = 1;     // 16 bytes
     uint96  public B = 2;     // 12 bytes
     uint16  public C = 4;     // 2 bytes
