@@ -2,78 +2,148 @@
 pragma solidity 0.8.17;
 
 contract StoragePart3 {
-    // Fixed Array
-    // Unfixed Array
-    // Array with UINT8
-    // Mapping
-    // Nested Mapping
-    // Mapping ==> Array
-    // Mapping ==> Struct
 
-    uint256[3] fixedArray;
-    uint256[] unfixedArray;
-    uint8[] typeUint8Array;
-
-    mapping (uint256 => uint256) myMapping;
-
+    uint256[3] fixedLengthArray;
+    uint256[] dynamicArray;
+    uint16[] smallArray; // 2 bytes
+    mapping(uint256 => uint256) private myMapping;
+    mapping(uint256 => mapping(uint256 => uint256)) public nestedMapping;
+    mapping(address => uint256[]) public mappingAddressToList;
 
     constructor() {
-        fixedArray = [10,80,90];
-        unfixedArray = [11,222,333,444,555];
-        typeUint8Array = [5,7,8,9];
-        myMapping[1] = 10000000;
+        fixedLengthArray = [100,199,465];
+        dynamicArray = [100,7,899,999, 4584];
+        smallArray = [1, 2, 3];
+        myMapping[1] = 10000;
+        nestedMapping[1][2] = 8589565;
+        mappingAddressToList[0x93f8dddd876c7dBE3323723500e83E202A7C96CC] = [777,7888,55555, 999];
     }
 
     function readFixedArray(uint256 index) external view returns(uint256 ret) {
         assembly {
-            let slot := fixedArray.slot
+            let slot := fixedLengthArray.slot
             ret := sload(add(slot, index))
         }
     }
 
     function writeToFixedArray(uint256 index, uint256 value) external {
         assembly {
-            let slot := fixedArray.slot
+            let slot := fixedLengthArray.slot
             sstore(add(slot, index), value)
         }
     }
 
-    function readLengthUnFixedArray(uint256 index) external view returns(uint256 ret) {
+    function dynamicArrayLength() external view returns (uint256 ret) {
         assembly {
-            let slot := unfixedArray.slot
-            ret := sload(add(slot, index))
+            ret := sload(dynamicArray.slot)
         }
     }
 
-    function readUnfixedArray(uint256 index) external view returns(uint256 ret) {
-        bytes32 slot;
+    function readDynamicArrayLocation(uint256 index) external view returns (uint256 ret) {
+        uint256 slot;
         assembly {
-            slot := unfixedArray.slot
-        }
-        bytes32 location = keccak256(abi.encode(slot));
-        assembly {
-            ret := sload(add(location, index))
-        }
-    }
-
-    function readTypeUint8Array(uint256 index) external view returns(bytes32 ret) {
-        bytes32 slot;
-
-        assembly {
-            slot := typeUint8Array.slot
+            slot := dynamicArray.slot
         }
 
         bytes32 location = keccak256(abi.encode(slot));
 
         assembly {
-            ret := sload(add(location, index))
+            ret := sload(add(location,index))
         }
     }
 
-    function readMyMapping() external {
-        bytes32 slot;
+    function readSmallArray() external view returns (uint256 ret) {
+        assembly {
+            ret := sload(smallArray.slot)
+        }
+    }
+
+    function readSmallArrayLocation(uint256 index) external view returns (bytes32 ret) {
+        uint256 slot;
+        assembly {
+            slot := smallArray.slot
+        }
+
+        bytes32 location = keccak256(abi.encode(slot));
+
+        assembly {
+            ret := sload(add(location,index))
+        }
+    }
+
+    function getMappingValue(uint256 key) external view returns (uint256 ret) {
+        uint256 slot;
         assembly {
             slot := myMapping.slot
+        }
+
+        bytes32 location = keccak256(abi.encode(key, uint256(slot)));
+
+        assembly {
+            ret := sload(location)
+        }
+    }
+
+    function getNestedMapping() external view returns (uint256 ret) {
+        uint256 slot;
+        assembly {
+            slot := nestedMapping.slot
+        }      
+
+        bytes32 location = keccak256(
+        abi.encode(
+            uint256(2),
+            keccak256(
+                abi.encode(
+                    uint256(1), uint256(slot)
+                )
+            )
+        )        
+    );
+    assembly {
+            ret := sload(location)
+        }
+    }
+
+    function lengthOfNestedMappingList() external view returns (uint256 ret) {
+        uint256 addressToListSlot;
+        assembly {
+            addressToListSlot := mappingAddressToList.slot
+        }
+
+        bytes32 location = keccak256(
+            abi.encode(
+                address(0x93f8dddd876c7dBE3323723500e83E202A7C96CC),
+                uint256(addressToListSlot)
+            )
+        );
+        assembly {
+            ret := sload(location)
+        }
+    }
+
+    function getAddressToList(uint256 index)
+        external
+        view
+        returns (uint256 ret)
+    {
+        uint256 slot;
+        assembly {
+            slot := mappingAddressToList.slot
+        }
+
+        bytes32 location = keccak256(
+            abi.encode(
+                keccak256(
+                    abi.encode(
+                        address(0x93f8dddd876c7dBE3323723500e83E202A7C96CC),
+                        uint256(slot)
+                    )
+                )
+            )
+        );
+        assembly {
+            ret := sload(add(location, index))
         }
     }
 
