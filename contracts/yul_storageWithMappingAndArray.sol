@@ -11,11 +11,6 @@ contract StoragePart3 {
     // Mapping ==> Struct
 
     uint256[3] fixedArray;
-    uint256 slot0 = fixedArray[0];
-    uint256 slot1 = fixedArray[1];
-    uint256 slot2 = fixedArray[2];
-    uint256 slot3 = fixedArray[3];
-
     uint256[] unfixedArray;
     uint8[] typeUint8Array;
 
