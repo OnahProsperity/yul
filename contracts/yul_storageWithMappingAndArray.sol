@@ -11,14 +11,22 @@ contract StoragePart3 {
     // Mapping ==> Struct
 
     uint256[3] fixedArray;
+    uint256 slot0 = fixedArray[0];
+    uint256 slot1 = fixedArray[1];
+    uint256 slot2 = fixedArray[2];
+    uint256 slot3 = fixedArray[3];
+
     uint256[] unfixedArray;
     uint8[] typeUint8Array;
+
+    mapping (uint256 => uint256) myMapping;
 
 
     constructor() {
         fixedArray = [10,80,90];
         unfixedArray = [11,222,333,444,555];
         typeUint8Array = [5,7,8,9];
+        myMapping[1] = 10000000;
     }
 
     function readFixedArray(uint256 index) external view returns(uint256 ret) {
@@ -64,6 +72,13 @@ contract StoragePart3 {
 
         assembly {
             ret := sload(add(location, index))
+        }
+    }
+
+    function readMyMapping() external {
+        bytes32 slot;
+        assembly {
+            slot := myMapping.slot
         }
     }
 
